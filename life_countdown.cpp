@@ -22,11 +22,17 @@ int daysBetweenDates(std::tm start, std::tm end) {
 }
 
 // Function to calculate the weeks left until a certain age
-int weeksLeftUntilAge(int birthYear, int birthMonth, int birthDay, int targetAge) {
+int weeksTotalUntilAge(int birthYear, int birthMonth, int birthDay, int targetAge) {
     std::tm birthDate = {0, 0, 0, birthDay, birthMonth - 1, birthYear - 1900};
     std::tm targetDate = {0, 0, 0, birthDay, birthMonth - 1, birthYear + targetAge - 1900};
 
     int totalDays = daysBetweenDates(birthDate, targetDate);
+    return totalDays / 7; // Convert days to weeks
+}
+
+int weeksLivedUntilToday(int birthYear, int birthMonth, int birthDay, std::tm* now){
+    std::tm birthDate = {0, 0, 0, birthDay, birthMonth - 1, birthYear - 1900};
+    int totalDays = daysBetweenDates(birthDate, *now);
     return totalDays / 7; // Convert days to weeks
 }
 
@@ -47,12 +53,12 @@ int main(int argc, char* argv[]) {
     std::istringstream(birthdateStr.substr(6, 2)) >> birthDay;
 
     // Get the current date
-    std::time_t t = std::time(0);
+    std::time_t t = std::time(0); //seconds since the Unix epoch (January 1, 1970).
     std::tm* now = std::localtime(&t);
 
     // Calculate total and remaining weeks
-    int totalWeeks = weeksLeftUntilAge(birthYear, birthMonth, birthDay, 85);
-    int weeksLived = weeksLeftUntilAge(birthYear, birthMonth, birthDay, now->tm_year + 1900 - birthYear);
+    int totalWeeks = weeksTotalUntilAge(birthYear, birthMonth, birthDay, 85);
+    int weeksLived = weeksLivedUntilToday(birthYear, birthMonth, birthDay, now);
     int weeksLeft = totalWeeks - weeksLived;
 
     // Calculate the miles needed to run per week
@@ -60,10 +66,7 @@ int main(int argc, char* argv[]) {
     std::tm endOfYear = {0, 0, 0, 31, 11, now->tm_year}; // December 31st of the current year
 
     int daysSinceStartOfYear = daysBetweenDates(startOfYear, *now);
-    int daysLeftInYear = daysBetweenDates(*now, endOfYear);
 
-    int weeksLeftInYear = daysLeftInYear / 7;
-    
     // Calculate the miles run so far
     double proportionOfYearPassed = static_cast<double>(daysSinceStartOfYear) / daysInYear(now->tm_year + 1900);
     double milesRunSoFar = proportionOfYearPassed * milesGoal;
