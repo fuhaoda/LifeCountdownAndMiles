@@ -69,9 +69,8 @@ int main(int argc, char* argv[]) {
     double milesRunSoFar = proportionOfYearPassed * milesGoal;
 
     // Output results with formatting
-    std::cout << "If you die at 85 years old, in your left, you will have total " << totalWeeks << " weeks, "
-              << "and now you only have \033[1;31m" << weeksLeft << "\033[0m weeks left!" << std::endl;
-    std::cout << "To achieve your goal to run " << milesGoal << " miles in " << (now->tm_year + 1900) << ", You should have already run approximately \033[1;31m" << std::fixed << std::setprecision(1) << milesRunSoFar << "\033[0m miles this year." << std::endl;
-   
+    std::cout << "If you live to 85 years old, you have a total of "<< totalWeeks << " weeks in your life, and you have \033[1;31m"<< weeksLeft << "\033[0m weeks left!" << std::endl;
+    std::cout << "To achieve your goal of running " << milesGoal << " miles in "<< (now->tm_year + 1900) << ", you should have run approximately \033[1;31m" << std::fixed << std::setprecision(1) << milesRunSoFar << "\033[0m miles so far this year." << std::endl;
+
     return 0;
 }
